@@ -6,8 +6,6 @@ class RegexUtils {
 
   static get FILE_EXTENSION() { return /\.([0-9a-z]{1,5}$)/ }
 
-  static get UUIDV4_REGEX_STRING() { return '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}' }
-
 }
 
 module.exports = RegexUtils
