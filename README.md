@@ -1,94 +1,55 @@
-Documentation can be found [here](https://ospin-web-dev.github.io/synapse/)
+[![codecov](https://codecov.io/gh/ospin-web-dev/synapse/branch/main/graph/badge.svg?token=5E41F0X7TY)](https://codecov.io/gh/ospin-web-dev/synapse)
 
----
+Documentation can be found [here](https://ospin-web-dev.github.io/synapse/)
 
 ## Table of Contents
 
-- [Use Overview](#UseOverview)
+- [Use Overview](#Overview)
   - [Configuration](#Configuration)
-  - [Authenticating as a User](#Authenticating-as-a-User)
-  - [Authenticating as a Device](#Authenticating-as-a-Device)
-- [API Documentation](#API-documentation)
-  - [Modules and their Methods](#modules-and-their-methods)
-  - [Helper Methods](#helper-methods)
+  - [Authenticating](#Authenticating)
 - [Use Examples](#Use-Examples)
 - [Contributing](#Contributing)
-- [Upcoming](#Upcoming)
-
 ---
 
-## <a name="UseOverview">Use Overview</a>
+## <a name="Overview">Overview</a>
 
-The @ospin/synapse exposes a set of conveniences methods wrapping calls to the OSPIN AWS backend, JSON serving, rest-like, API. Unless a method is explicitly labeled as using a public endpoint, or otherwise stated, all synapse consumers must do the following before using the methods provided:
-  - [configure the synapse for their environment](#Configuration)
-  - authenticate [as a User](#Authenticating-as-a-User) or [as a Device](#Authenticating-as-a-Device)
+The @ospin/synapse is a JavaScript SDK to communicate to Ospin's HTTP API from a device. It is build on top of @aws-amplify. To use it, the device has to have an X509 certificate that was issues by the OSPIN cloud.
+
+  - [configure synapse for the environment](#Configuration)
+  - [Authentication](#Authenticating)
 
 #### <a name="Configuration">Configuration</a>
 ```js
-const synapse = require('@ospin/synapse') // or import
+const synapse = require('@ospin/synapse')
 
 synapse.configure() // set up the SDK for default usage
 ```
 
-#### <a name="Authenticating-as-a-User">Authenticating as a User</a>
+#### <a name="Authenticating">Authenticating</a>
 
-With the synapse configured, a user can authenticate as their OSPIN AWS Cognito user:
-```js
-const synapse = require('@ospin/synapse')
+With the synapse configured, a device can authenticate with deviceId and the certificate
 
-synapse.auth.signIn(username, password) // may require 2FA
-```
-
-#### <a name="Authenticating-as-a-Device">Authenticating as a Device</a>
-
-With the synapse configured, a device can authenticate using its certificate:
 ```js
 synapse.deviceAPI.authentication.setCredentials({
   deviceId: <deviceId>,
   pathToCert: <pathToCert>
 })
 
-
-synapse.deviceAPI.validateAuthorization()
-// -> { sucess, status, data, errorMsg }
-
+const { status } = await synapse.deviceAPI.validateAuthorization() // allows to validate your credentials
 ```
----
 
 ## <a name="Use-Examples">Use Example</a>
 ```js
-// getting the list representation of all devices (that the authenticated consumer is privileged to)
-const synapse = require('@ospin/synapse')
+// loading a process
 
-synapse.connect()
-
-const username = 'Nero Claudius Caesar Augustus Germanicus'
-const password = 'BurnRomeToMakeANewPalace@Good-Plan-&-Ok-Password',
-
-synapse.auth.signIn(username, password)
-
+const processId = "a3339d89-345b-4baf-9859-46a4542a505a"
 const {
-  success: listDevicesWasSuccessful,
-  data: devicesList,
-  errorMsg: listDevicesErrorMsg,
-  error: listDevicesError
-} = synapse.device.list()
+  status: 200,
+  data: process,
+} = await synapse.deviceAPI.process.get(processId)
 
-if (listDevicesWasSuccessful) {
-  console.log(deviceList)
-  // -> [ { ...deviceObj }, { ...deviceObj }, ... ]
-} else {
-  // kindly find out why...
-  console.error(errorMsg)
-
-  // ..or live up to the username and be an unforgiving and unyielding tyrant
-  throw listDevicesError
-  // -> 💣
-}
 
 ```
-
----
 
 ## <a name="Contributing">Contributing</a>
 
@@ -110,6 +71,3 @@ Available types:
  - revert: Reverts a previous commit
 
 Add BREAKING CHANGE into the commit message body (!) to indicate a major version release.
-
----
-

@@ -1,5 +1,5 @@
 codecov:
-  token: 123 # TODO: fix this token
+  token: a078fc3c-a69d-47ef-bb5a-16a2723f471b
 comment:
   layout: "reach, diff, files"
   behavior: default
