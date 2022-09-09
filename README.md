@@ -13,7 +13,7 @@ Documentation can be found [here](https://ospin-web-dev.github.io/synapse/)
 
 ## <a name="Overview">Overview</a>
 
-The @ospin/synapse is a JavaScript SDK to communicate to Ospin's HTTP API from a device. It is build on top of @aws-amplify. To use it, the device has to have an X509 certificate that was issues by the OSPIN cloud.
+The @ospin/synapse is a JavaScript SDK to communicate to Ospin's HTTP API from a device. It is build on top of @aws-amplify. To use it, the device has to have a X509 certificate that was issued by the OSPIN cloud.
 
   - [configure synapse for the environment](#Configuration)
   - [Authentication](#Authenticating)
@@ -27,12 +27,14 @@ synapse.configure() // set up the SDK for default usage
 
 #### <a name="Authenticating">Authenticating</a>
 
-With the synapse configured, a device can authenticate with deviceId and the certificate
+With the synapse configured, a device can authenticate with deviceId and the path to the X509 certificate
 
 ```js
+const deviceId = "707be014-1e80-482f-ae5c-b6b7b11a4ad2"
+const pathToCert = "my/path/to/cert"
 synapse.deviceAPI.authentication.setCredentials({
-  deviceId: <deviceId>,
-  pathToCert: <pathToCert>
+  deviceId,
+  pathToCert,
 })
 
 const { status } = await synapse.deviceAPI.validateAuthorization() // allows to validate your credentials
