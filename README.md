@@ -37,7 +37,7 @@ synapse.deviceAPI.authentication.setCredentials({
   pathToCert,
 })
 
-const { status } = await synapse.deviceAPI.validateAuthorization() // allows to validate your credentials
+const { status } = await synapse.deviceAPI.authentication.validateAuthorization() // allows to validate your credentials
 ```
 
 ## <a name="Use-Examples">Use Example</a>
